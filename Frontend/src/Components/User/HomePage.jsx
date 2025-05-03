@@ -26,7 +26,7 @@ function Home() {
       const fetchFavCountries=async()=>{
         try{
 
-          const response = await axios.get('http://localhost:5000/api/country/get-favourite-country',{
+          const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/country/get-favourite-country`,{
             withCredentials:true
           })
           const favSet = new Set(response.data.favouriteCountries.map(item => item.countryCode));
@@ -45,7 +45,7 @@ function Home() {
   
     try {
       if (isAlreadyFav) {
-        await axios.delete('http://localhost:5000/api/country/delete-fav-country', {
+        await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/api/country/delete-fav-country`, {
           data: { countryCode },
           withCredentials: true
         });
@@ -62,7 +62,7 @@ function Home() {
           return newSet;
         });
       } else {
-        await axios.post('http://localhost:5000/api/country/add-favourite-country', {
+        await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/country/add-favourite-country`, {
           countryName,
           countryCode
         }, { withCredentials: true });

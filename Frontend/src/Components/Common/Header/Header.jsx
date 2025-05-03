@@ -19,7 +19,7 @@ function Header() {
 
   const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:5000/api/users/logout', {}, { withCredentials: true });
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/users/logout`, {}, { withCredentials: true });
       dispatch(logout());
       setMenuOpen(!menuOpen);
       console.log("Logged out, navigating to /");
