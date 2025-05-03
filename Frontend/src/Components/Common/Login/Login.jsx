@@ -17,6 +17,8 @@ function Login() {
   const submitForm = async (e) => {
     e.preventDefault();
 
+    console.log("backend url",process.env.REACT_APP_BACKEND_URL);
+
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/api/users/login`,
