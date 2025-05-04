@@ -1,63 +1,62 @@
-import { Routes,Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-
-//token checker when refreshing
+// token checker when refreshing
 import AuthChecker from "./Auth/AuthChecker";
 
-//common routes
+// common routes
 import Login from "./Components/Common/Login/Login";
 import Register from "./Components/Common/Register/Register";
 import LandingPage from "./Components/Common/LandingPage/LandingPage";
 import Header from "./Components/Common/Header/Header";
 import Footer from "./Components/Common/Footer/Footer";
 
-
-//Authenticated Routes
+// authenticated routes
 import UserDashBoard from "./Components/User/UserDashBoard";
 import HomePage from "./Components/User/HomePage";
 import CountryDetails from "./Components/User/CountryDetails";
 import FavouriteCountries from "./Components/User/FavouriteCountries";
 import Splash from "./Components/User/Splash";
 
+function App() {
+  const { isAuthenticated, checkedAuth } = useSelector((state) => state.user);
 
-function App(){
+  if (!checkedAuth) {
+    // wait until auth check is done
+    return (
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
-  const { isAuthenticated} = useSelector((state) => state.user);
-
-  console.log("from app",isAuthenticated);
-
-  return(
+  return (
     <div className="min-h-screen bg-black text-white flex flex-col overflow-x-hidden">
       <AuthChecker />
       <Header />
-      
-      {isAuthenticated ? (
-        <>
-          <Routes>
-            <Route path="/userdashboard" element={<UserDashBoard/>}/>
-            <Route path ='/homePage' element={<HomePage/>} />
-            <Route path="/" element={<LandingPage/>}/>
-            <Route path='/country/:code' element={<CountryDetails/>}/>
-            <Route path="/favourite-countries" element={<FavouriteCountries/>}/>
-            <Route path="/splash" element={<Splash/>}/>
-          </Routes>
-        </>
-      ):
-      (
-        <>
-          <Routes>
-            <Route path="/" element={<LandingPage/>}/>
-            <Route path="/login" element={<Login/>}/>
-            <Route path="/register" element={<Register/>}/>
-          </Routes>
-        </>
-      )}
-    <Footer/> 
-      
-    </div>
-  )
 
+      <Routes>
+        {isAuthenticated ? (
+          <>
+            <Route path="/userdashboard" element={<UserDashBoard />} />
+            <Route path="/homePage" element={<HomePage />} />
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/country/:code" element={<CountryDetails />} />
+            <Route path="/favourite-countries" element={<FavouriteCountries />} />
+            <Route path="/splash" element={<Splash />} />
+          </>
+        ) : (
+          <>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </>
+        )}
+      </Routes>
+
+      <Footer />
+    </div>
+  );
 }
 
 export default App;
