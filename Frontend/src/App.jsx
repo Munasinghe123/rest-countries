@@ -21,35 +21,25 @@ import Splash from "./Components/User/Splash";
 function App() {
   const { isAuthenticated, checkedAuth } = useSelector((state) => state.user);
 
-  if (!checkedAuth) {
-    // wait until auth check is done
-    return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
-        <p>Loading...</p>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-black text-white flex flex-col overflow-x-hidden">
       <AuthChecker />
       <Header />
 
       <Routes>
-        {isAuthenticated ? (
+        {/* public routes (always shown) */}
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
+        {/* private routes (only after token check passes) */}
+        {checkedAuth && isAuthenticated && (
           <>
             <Route path="/userdashboard" element={<UserDashBoard />} />
             <Route path="/homePage" element={<HomePage />} />
-            <Route path="/" element={<LandingPage />} />
             <Route path="/country/:code" element={<CountryDetails />} />
             <Route path="/favourite-countries" element={<FavouriteCountries />} />
             <Route path="/splash" element={<Splash />} />
-          </>
-        ) : (
-          <>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
           </>
         )}
       </Routes>
