@@ -11,7 +11,7 @@ const AuthChecker = () => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/users/checktoken`, {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/users/checktoken`, {
           withCredentials: true,
         });
 
