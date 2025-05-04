@@ -1,7 +1,8 @@
+
 import { useEffect } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { loginSuccess, setCheckedAuth } from "../Redux/UserSlice";
+import { loginSuccess } from "../Redux/UserSlice";
 import { jwtDecode } from "jwt-decode";
 
 const AuthChecker = () => {
@@ -10,23 +11,27 @@ const AuthChecker = () => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/api/users/checktoken`,
-          { withCredentials: true }
-        );
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/users/checktoken`, {
+          withCredentials: true,
+        });
+
+        console.log("Checked token :", response.data.token);;
+
         const decoded = jwtDecode(response.data.token);
-        dispatch(loginSuccess({ user: decoded }));
+        const user = decoded;
+         
+        console.log("Auth check successful:", user);
+
+        dispatch(loginSuccess({ user }));
       } catch (err) {
-      
-      } finally {
-        dispatch(setCheckedAuth(true));
+        console.log("Auth check failed:", err.response?.data?.message || err.message);
       }
     };
 
     checkAuth();
   }, []);
 
-  return null;
+  return null; 
 };
 
 export default AuthChecker;
